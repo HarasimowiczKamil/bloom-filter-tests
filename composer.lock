@@ -1,0 +1,51 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "825492e72de474b0e681888626259c1c",
+    "packages": [
+        {
+            "name": "igoreus/bloomfilter",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/igoreus/bloomfilter.git",
+                "reference": "3e4c7ce9dbb673989961ec36f53f0bc7946af402"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/igoreus/bloomfilter/zipball/3e4c7ce9dbb673989961ec36f53f0bc7946af402",
+                "reference": "3e4c7ce9dbb673989961ec36f53f0bc7946af402",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Igoreus\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Igor Veremchuk",
+                    "email": "igor.veremchuk@gmail.com"
+                }
+            ],
+            "description": "Implementation of bloom filter",
+            "time": "2016-10-26T07:13:06+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

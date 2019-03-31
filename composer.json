@@ -1,0 +1,21 @@
+{
+  "autoload": {
+    "psr-4": {"Acme\\": "src/"}
+  },
+  "require": {
+    "php": ">=7.2.0",
+    "igoreus/bloomfilter": "*",
+    "ext-mbstring": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "App": "src/"
+    }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "test -e sjp-20190225.zip || wget https://sjp.pl/slownik/growy/sjp-20190225.zip",
+      "test -e slowa.txt || unzip sjp-20190225.zip -x README.txt"
+    ]
+  }
+}
