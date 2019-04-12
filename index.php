@@ -7,8 +7,8 @@ use App\Utils;
 require_once 'vendor/autoload.php';
 
 $lastTime = $time = microtime(true);
-$falsePositiveProbability = 0.001;
-$approximateSize = 3000000;
+$falsePositiveProbability = $argv[1] ?? 0.001;
+$approximateSize = $argv[2] ?? 3000000;
 
 $wordsFile = 'slowa.txt';
 $equalList = [];
@@ -18,7 +18,7 @@ $bloomFileName = 'bloom_filter_' . $falsePositiveProbability . '.sphp';
 
 echo sprintf(
     'Test filtru blooma, przwidywana liczba elementów zbioru %d' . PHP_EOL .
-    'z prawdopodobieństwem pałszywie pozytywnych odpowiedzi %.3f' . PHP_EOL,
+    'z prawdopodobieństwem fałszywie pozytywnych odpowiedzi %.3f' . PHP_EOL,
     $approximateSize,
     $falsePositiveProbability
 );
@@ -26,19 +26,21 @@ echo sprintf(
 $isEqualListExists = file_exists($equalFileName);
 $isBloomExists = file_exists($bloomFileName);
 
-if ($isEqualListExists) {
-    $equalTime = microtime(true);
-    echo 'Load equal array...' . PHP_EOL;
-    $equalList = unserialize(file_get_contents($equalFileName));
-    echo 'Equal array loaded from file in ' . number_format(microtime(true) - $equalTime, 2) . 'sek' . PHP_EOL;
-}
-
 if ($isBloomExists) {
     $bloomTime = microtime(true);
     echo 'Load bloom filter...' . PHP_EOL;
     $filterPersister = BitString::createFromString(file_get_contents($bloomFileName));
     $filter = BloomFilter::createFromApproximateSize($filterPersister, 3000000, $falsePositiveProbability);
     echo 'Bloom loaded from file in ' . number_format(microtime(true) - $bloomTime, 2) . 'sek' . PHP_EOL;
+    echo 'Zużycie pamięci: ' . Utils::formatBytes(memory_get_usage(), 2) . PHP_EOL;
+}
+
+if ($isEqualListExists) {
+    $equalTime = microtime(true);
+    echo 'Load equal array...' . PHP_EOL;
+    $equalList = unserialize(file_get_contents($equalFileName), ['allowed_classes' => false]);
+    echo 'Equal array loaded from file in ' . number_format(microtime(true) - $equalTime, 2) . 'sek' . PHP_EOL;
+    echo 'Zużycie pamięci: ' . Utils::formatBytes(memory_get_usage(), 2) . PHP_EOL;
 }
 
 if (!$isBloomExists) {
@@ -105,5 +107,7 @@ if (!$isBloomExists) {
 echo PHP_EOL . PHP_EOL . 'Rozpoczynamy testowanie losowo wygenerowanych wyrazów:' . PHP_EOL . PHP_EOL;
 
 Utils::testWordsFromFile('random_test.txt', $filter, $equalList, false);
+
+echo 'Zużycie pamięci: ' . Utils::formatBytes(memory_get_usage(), 2) . PHP_EOL;
 
 

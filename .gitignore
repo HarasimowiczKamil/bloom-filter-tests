@@ -3,5 +3,6 @@ slowa.txt
 sjp-20190225.zip
 random_test.txt
 *.sphp
+*.filter
 .idea
 vendor
