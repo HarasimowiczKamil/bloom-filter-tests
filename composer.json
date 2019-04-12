@@ -14,8 +14,8 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "test -e sjp-20190225.zip || wget https://sjp.pl/slownik/growy/sjp-20190225.zip",
-      "test -e slowa.txt || unzip sjp-20190225.zip -x README.txt"
+      "test -e sjp-20190407.zip || wget https://sjp.pl/slownik/growy/sjp-20190407.zip",
+      "test -e slowa.txt || unzip sjp-20190407.zip -x README.txt"
     ]
   }
 }
