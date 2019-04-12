@@ -1,0 +1,158 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="node_modules/reveal.js/css/reset.css">
+        <link rel="stylesheet" href="node_modules/reveal.js/css/reveal.css">
+        <link rel="stylesheet" href="node_modules/reveal.js/css/theme/blood.css">
+    </head>
+    <body lang="pl">
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown>
+                    <textarea data-template>
+                        # Filtr Blooma
+
+                        > Kamil Harasimowicz
+                    </textarea>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ## Historia
+
+                        Burton Howard Bloom w 1970 roku opracował filtr (nazywany teraz Filtrem Blooma) który służy do testowania czy dany element znajduje się w zbiorze czy nie.
+                    </textarea>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ## Właściwości filtru Blooma
+
+                        * odpowiedź negatywna jest zawsze pewna
+                        * odpowiedź pozytywna może być fałszywa
+                        * koszt dodania elementu i zapytania jest stały
+                    </textarea>
+                </section>
+                <section data-markdown>
+                    <textarea data-template>
+                        ## Budowa filtru Blooma
+
+                        * Tablica `m` bitów
+                        * `k` niezależnych funkcji hashujących, zwracających wynik z zakresu `[0,m)`
+                    </textarea>
+                </section>
+                <section>
+                    <section data-markdown>
+                        <textarea data-template>
+                            ### Sposób działania filtru
+
+                            ```
+                            0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+                            ----------------------------------------------
+                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                            ```
+                        </textarea>
+                    </section>
+                    <section data-markdown>
+                        <textarea data-template>
+                            ### Dodanie elementu do zbioru
+
+                            ```
+                            element = 'foo'
+                            hash1(element) = 3
+                            hash2(element) = 10
+                            hash3(element) = 5
+
+                            0  0  0  1  0  1  0  0  0  0  1  0  0  0  0  0
+                            ----------------------------------------------
+                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                     ^     ^              ^
+                            ```
+                        </textarea>
+                    </section>
+                    <section data-markdown>
+                        <textarea data-template>
+                            ### Dodanie kolejnego elementu
+
+                            ```
+                            element = 'bar'
+                            hash1(element) = 4
+                            hash2(element) = 3
+                            hash3(element) = 8
+
+                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                            ----------------------------------------------
+                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                     ^  ^           ^
+                            ```
+                        </textarea>
+                    </section>
+                    <section data-markdown>
+                        <textarea data-template>
+                            ### Odpowiedź negatywna
+
+                            ```
+                            element = 'baz'
+                            hash1(element) = 5
+                            hash2(element) = 4
+                            hash3(element) = 7
+
+                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                            ----------------------------------------------
+                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                        ^  ^     ^
+                            ```
+                        </textarea>
+                    </section>
+                    <section data-markdown>
+                        <textarea data-template>
+                            ### Odpowiedź pozytywna
+
+                            ```
+                            element = 'bar'
+                            hash1(element) = 4
+                            hash2(element) = 3
+                            hash3(element) = 8
+
+                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                            ----------------------------------------------
+                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                     ^  ^           ^
+                            ```
+                        </textarea>
+                    </section>
+                    <section data-markdown>
+                        <textarea data-template>
+                            ### Odpowiedź pozytywna
+
+                            ```
+                            element = 'qux'
+                            hash1(element) = 10
+                            hash2(element) = 8
+                            hash3(element) = 3
+
+                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                            ----------------------------------------------
+                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                     ^              ^     ^
+                            ```
+                        </textarea>
+                    </section>
+                </section>
+                <section data-markdown>
+                        <textarea data-template>
+                            ## Koniec
+                        </textarea>
+                </section>
+            </div>
+        </div>
+        <script src="node_modules/reveal.js/js/reveal.js"></script>
+        <script>
+          Reveal.initialize({
+            dependencies: [
+              { src: 'node_modules/reveal.js/plugin/highlight/highlight.js', async: true },
+              { src: 'node_modules/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+              { src: 'node_modules/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+            ]
+          });
+        </script>
+    </body>
+</html>

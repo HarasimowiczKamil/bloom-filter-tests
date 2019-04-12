@@ -38,7 +38,8 @@ if ($isBloomExists) {
 if ($isEqualListExists) {
     $equalTime = microtime(true);
     echo 'Load equal array...' . PHP_EOL;
-    $equalList = unserialize(file_get_contents($equalFileName), ['allowed_classes' => false]);
+//    $equalList = unserialize(file_get_contents($equalFileName), ['allowed_classes' => false]);
+    $equalList = [];
     echo 'Equal array loaded from file in ' . number_format(microtime(true) - $equalTime, 2) . 'sek' . PHP_EOL;
     echo 'Zużycie pamięci: ' . Utils::formatBytes(memory_get_usage(), 2) . PHP_EOL;
 }
@@ -106,8 +107,11 @@ if (!$isBloomExists) {
 
 echo PHP_EOL . PHP_EOL . 'Rozpoczynamy testowanie losowo wygenerowanych wyrazów:' . PHP_EOL . PHP_EOL;
 
-Utils::testWordsFromFile('random_test.txt', $filter, $equalList, false);
+$time = microtime(true);
 
+Utils::testWordsFromFile('random_test.txt', $filter, $equalList);
+
+echo sprintf('Test zakończony w %.3f sek', microtime(true) - $time) . PHP_EOL;
 echo 'Zużycie pamięci: ' . Utils::formatBytes(memory_get_usage(), 2) . PHP_EOL;
 
 

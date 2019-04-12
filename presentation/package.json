@@ -1,0 +1,7 @@
+{
+    "name": "presentation about bloom filter",
+    "version": "1.0.0",
+    "dependencies": {
+        "reveal.js": "^3.8.0"
+    }
+}
