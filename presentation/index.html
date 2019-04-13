@@ -9,138 +9,171 @@
         <div class="reveal">
             <div class="slides">
                 <section data-markdown>
-                    <textarea data-template>
-                        # Filtr Blooma
+                    # Filtr Blooma
 
-                        > Kamil Harasimowicz
-                    </textarea>
+                    > Kamil Harasimowicz
                 </section>
                 <section data-markdown>
-                    <textarea data-template>
-                        ## Historia
+                    ## Historia
 
-                        Burton Howard Bloom w 1970 roku opracował filtr (nazywany teraz Filtrem Blooma) który służy do testowania czy dany element znajduje się w zbiorze czy nie.
-                    </textarea>
+                    Burton Howard Bloom w 1970 roku opracował filtr (nazywany teraz Filtrem Blooma) który służy do testowania czy dany element znajduje się w zbiorze czy nie.
                 </section>
                 <section data-markdown>
-                    <textarea data-template>
-                        ## Właściwości filtru Blooma
+                    ## Właściwości filtru Blooma
 
-                        * odpowiedź negatywna jest zawsze pewna
-                        * odpowiedź pozytywna może być fałszywa
-                        * koszt dodania elementu i zapytania jest stały
-                    </textarea>
-                </section>
-                <section data-markdown>
-                    <textarea data-template>
-                        ## Budowa filtru Blooma
-
-                        * Tablica `m` bitów
-                        * `k` niezależnych funkcji hashujących, zwracających wynik z zakresu `[0,m)`
-                    </textarea>
+                    * odpowiedź negatywna jest zawsze pewna
+                    * odpowiedź pozytywna może być fałszywa
+                    * koszt dodania elementu i zapytania jest stały
                 </section>
                 <section>
                     <section data-markdown>
-                        <textarea data-template>
-                            ### Sposób działania filtru
-
-                            ```
-                            0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
-                            ----------------------------------------------
-                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
-                            ```
-                        </textarea>
+                        ## Praktyczne wykorzystanie filtru Blooma
                     </section>
                     <section data-markdown>
-                        <textarea data-template>
-                            ### Dodanie elementu do zbioru
+                        ## Ograniczenie operacji dyskowych
 
-                            ```
-                            element = 'foo'
-                            hash1(element) = 3
-                            hash2(element) = 10
-                            hash3(element) = 5
-
-                            0  0  0  1  0  1  0  0  0  0  1  0  0  0  0  0
-                            ----------------------------------------------
-                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
-                                     ^     ^              ^
-                            ```
-                        </textarea>
+                        * Google Bigtable
+                        * Apache HBase
+                        * Apache Cassandra
+                        * Postgresq
                     </section>
                     <section data-markdown>
-                        <textarea data-template>
-                            ### Dodanie kolejnego elementu
+                        ## Google Chrome
 
-                            ```
-                            element = 'bar'
-                            hash1(element) = 4
-                            hash2(element) = 3
-                            hash3(element) = 8
-
-                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
-                            ----------------------------------------------
-                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
-                                     ^  ^           ^
-                            ```
-                        </textarea>
+                        Każdy adres URL najpierw jest sprawdzany pod kątem lokalnego filtru Bloom i tylko wtedy, gdy filtr Blooma zwrócił wynik pozytywny, została przeprowadzona pełna kontrola wykonanego adresu URL.
                     </section>
                     <section data-markdown>
-                        <textarea data-template>
-                            ### Odpowiedź negatywna
+                        ## Kryptowaluty
 
-                            ```
-                            element = 'baz'
-                            hash1(element) = 5
-                            hash2(element) = 4
-                            hash3(element) = 7
-
-                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
-                            ----------------------------------------------
-                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
-                                        ^  ^     ^
-                            ```
-                        </textarea>
+                        * Bitcoin używa filtrów Blooma, aby przyspieszyć synchronizację portfela.
+                        * Ethereum używa filtrów Bloom do szybkiego wyszukiwania dzienników na łańcuchu bloków.
                     </section>
                     <section data-markdown>
-                        <textarea data-template>
-                            ### Odpowiedź pozytywna
+                        ## Systemy rozproszone, serwery proxy
 
-                            ```
-                            element = 'bar'
-                            hash1(element) = 4
-                            hash2(element) = 3
-                            hash3(element) = 8
+                        * do decydowania który serwer odpytać o dany zasób
+                        * ograniczają transfer danych między sobą
 
-                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
-                            ----------------------------------------------
-                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
-                                     ^  ^           ^
-                            ```
-                        </textarea>
-                    </section>
-                    <section data-markdown>
-                        <textarea data-template>
-                            ### Odpowiedź pozytywna
-
-                            ```
-                            element = 'qux'
-                            hash1(element) = 10
-                            hash2(element) = 8
-                            hash3(element) = 3
-
-                            0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
-                            ----------------------------------------------
-                            0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
-                                     ^              ^     ^
-                            ```
-                        </textarea>
                     </section>
                 </section>
                 <section data-markdown>
-                        <textarea data-template>
-                            ## Koniec
-                        </textarea>
+                    ## Budowa filtru Blooma
+
+                    * Tablica `m` bitów
+                    * `k` niezależnych funkcji hashujących, zwracających wynik z zakresu `[0,m)`
+                </section>
+                <section>
+                    <section data-markdown>
+                        ### Sposób działania filtru
+
+                        ```
+                        0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+                        ----------------------------------------------
+                        0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                        ```
+                    </section>
+                    <section data-markdown>
+                        ### Dodanie elementu do zbioru
+
+                        ```
+                        element = 'foo'
+                        hash1(element) = 3
+                        hash2(element) = 10
+                        hash3(element) = 5
+
+                        0  0  0  1  0  1  0  0  0  0  1  0  0  0  0  0
+                        ----------------------------------------------
+                        0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                 ^     ^              ^
+                        ```
+                    </section>
+                    <section data-markdown>
+                        ### Dodanie kolejnego elementu
+
+                        ```
+                        element = 'bar'
+                        hash1(element) = 4
+                        hash2(element) = 3
+                        hash3(element) = 8
+
+                        0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                        ----------------------------------------------
+                        0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                 ^  ^           ^
+                        ```
+                    </section>
+                    <section data-markdown>
+                        ### Odpowiedź negatywna
+
+                        ```
+                        element = 'baz'
+                        hash1(element) = 5
+                        hash2(element) = 4
+                        hash3(element) = 7
+
+                        0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                        ----------------------------------------------
+                        0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                    ^  ^     ^
+                        ```
+                    </section>
+                    <section data-markdown>
+                        ### Odpowiedź pozytywna
+
+                        ```
+                        element = 'bar'
+                        hash1(element) = 4
+                        hash2(element) = 3
+                        hash3(element) = 8
+
+                        0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                        ----------------------------------------------
+                        0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                 ^  ^           ^
+                        ```
+                    </section>
+                    <section data-markdown>
+                        ### Odpowiedź pozytywna
+
+                        ```
+                        element = 'qux'
+                        hash1(element) = 10
+                        hash2(element) = 8
+                        hash3(element) = 3
+
+                        0  0  0  1  1  1  0  0  1  0  1  0  0  0  0  0
+                        ----------------------------------------------
+                        0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+                                 ^              ^     ^
+                        ```
+                    </section>
+                </section>
+                <section>
+                    <section data-markdown>
+                        ## Właściwości filtru Blooma
+
+                        * zawsze można dodać element do zbioru
+                        * nie można usunąć elementu zbioru
+                        * przepełniony filtr zawsze będzie zwracać `true`
+                        * prawdopodobieństwo fałszu można łatwo obliczyć (przy założeniu, że funkcje hashujące mają równy rozkład)
+                        * Obliczanie `k` niezależnych funkcji hashujących można zrównoleglić
+                    </section>
+                    <section data-markdown>
+                        ## Gdy jednak potrzebujemy usunąć element
+
+                        * użycie drugiego filtra
+                        * użycie liczników
+                    </section>
+                </section>
+                <section data-markdown>
+                    ![](demo.png)
+                </section>
+                <section data-markdown>
+                    ## Pytania?
+                    ![](pytanie.jpg)
+                </section>
+                <section data-markdown>
+                    ## Koniec
                 </section>
             </div>
         </div>
