@@ -1,0 +1,8 @@
+@startuml
+== Case 2 ==
+
+User -> "Bloom Filter": Do you have `bar`?
+"Bloom Filter" -> User: ~Yes
+User -> Storage: Do you have `bar`?
+Storage -> User: Yes
+@enduml

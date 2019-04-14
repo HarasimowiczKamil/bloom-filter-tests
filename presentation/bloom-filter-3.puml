@@ -1,0 +1,10 @@
+@startuml
+
+== Case 3 ==
+
+User -> "Bloom Filter": Do you have `baz`?
+"Bloom Filter" -> User: ~Yes
+User -> Storage: Do you have baz?
+Storage -> User: No
+
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+
+== Case 1 ==
+
+User -> "Bloom Filter": Do you have `foo`?
+"Bloom Filter" -> User: No
+
+@enduml
