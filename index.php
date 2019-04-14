@@ -9,6 +9,7 @@ require_once 'vendor/autoload.php';
 $lastTime = $time = microtime(true);
 $falsePositiveProbability = $argv[1] ?? 0.001;
 $approximateSize = $argv[2] ?? 3000000;
+$hashFunctions = ['Crc32b', 'Fnv', /*'Jenkins', 'Murmur'*/];
 
 $wordsFile = 'slowa.txt';
 $equalList = [];
@@ -30,7 +31,7 @@ if ($isBloomExists) {
     $bloomTime = microtime(true);
     echo 'Load bloom filter...' . PHP_EOL;
     $filterPersister = BitString::createFromString(file_get_contents($bloomFileName));
-    $filter = BloomFilter::createFromApproximateSize($filterPersister, 3000000, $falsePositiveProbability);
+    $filter = BloomFilter::createFromApproximateSize($filterPersister, 3000000, $falsePositiveProbability, $hashFunctions);
     echo 'Bloom loaded from file in ' . number_format(microtime(true) - $bloomTime, 2) . 'sek' . PHP_EOL;
     echo 'Zużycie pamięci: ' . Utils::formatBytes(memory_get_usage(), 2) . PHP_EOL;
 }
@@ -38,15 +39,15 @@ if ($isBloomExists) {
 if ($isEqualListExists) {
     $equalTime = microtime(true);
     echo 'Load equal array...' . PHP_EOL;
-//    $equalList = unserialize(file_get_contents($equalFileName), ['allowed_classes' => false]);
-    $equalList = [];
+    $equalList = unserialize(file_get_contents($equalFileName), ['allowed_classes' => false]);
+//    $equalList = [];
     echo 'Equal array loaded from file in ' . number_format(microtime(true) - $equalTime, 2) . 'sek' . PHP_EOL;
     echo 'Zużycie pamięci: ' . Utils::formatBytes(memory_get_usage(), 2) . PHP_EOL;
 }
 
 if (!$isBloomExists) {
     $filterPersister = new BitString();
-    $filter = BloomFilter::createFromApproximateSize($filterPersister, 3000000, $falsePositiveProbability);
+    $filter = BloomFilter::createFromApproximateSize($filterPersister, 3000000, $falsePositiveProbability, $hashFunctions);
 }
 
 if (!$isBloomExists || !$isEqualListExists) {
